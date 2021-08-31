@@ -12,7 +12,8 @@ function Connect(props) {
             fontSize: 18,
             fontWeight: 500,
             color: '#ed6f1b',
-            width: 190
+            width: 190,
+            height: 50
         }} onClick={props.connect}>Connect Wallet</button>
     );
   }

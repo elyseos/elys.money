@@ -17,28 +17,16 @@ class TokenInfo extends Component {
         waitingForWithdraw: false
     }
     withdraw = async () => {
-        let lock = await this.getLock()
+        let lock = this.props.lock
         this.setState({waitingForWithdraw:true})
+        //need to do polling etc. here
         await lock['release']([])
         await this.getInfo(lock)
         this.setState({waitingForWithdraw:false})
     }
-    getLock = async () => {
-        let TokenFactory = new Contract('lockFactory',contractAddress['lockFactory'])
-        let accounts = await window.web3.eth.getAccounts()
-        let account = accounts[0]
-        try{
-            let lockAddress = await TokenFactory['getLock']([account])
-            let lock = new Contract('lockToken',lockAddress)
-            return lock
-        }
-        catch(e){
-            return null
-        }
-    }
-
-    getInfo = async (lock) => {
-        if(!lock){
+    
+    getInfo = async () => {
+        if(!this.props.lock){
             this.setState({
                 lockedLoading: false,
                 locked: "0",
@@ -48,6 +36,7 @@ class TokenInfo extends Component {
                 available: "0"
             })
         }
+        let lock = this.props.lock
         try{
             let locked = await lock['locked']([])
             locked = (locked/100000).toString()
@@ -76,8 +65,7 @@ class TokenInfo extends Component {
         }
     }
     componentDidMount = async () => {
-        let lock = await this.getLock()
-        await this.getInfo(lock)
+        await this.getInfo()
     }
     render = () => {
         return (
@@ -98,4 +86,83 @@ class TokenInfo extends Component {
     }
 }
 
-export default TokenInfo
+class TokenInfoPage extends Component {
+    state = {
+        lockSeed: null,
+        lockTeam: null,
+        viewing: 'seed',
+        loading: true
+    }
+    getLock = async (factory) => {
+        
+        let TokenFactory = new Contract('lockFactory',contractAddress[factory])
+        let accounts = await window.web3.eth.getAccounts()
+        let account = accounts[0]
+        
+        try{
+            let lockAddress = await TokenFactory['getLock']([account])
+            return new Contract('lockToken',lockAddress)
+        }
+        catch(e){
+            return null
+        }
+        
+    }
+
+    componentDidMount = async () => {
+        let seedLock = await this.getLock('lockFactorySeed')
+        let teamLock = await this.getLock('lockFactoryTeam')
+        this.setState({
+            lockSeed: seedLock,
+            lockTeam: teamLock,
+            loading: false
+        })
+    }
+    choose = (lock) => {
+        this.setState({viewing:lock})
+    }
+    render = () => {
+        if(this.state.loading)return (
+            <div>Loading..</div>
+        )
+        if(!this.state.lockSeed && !this.state.lockTeam)return (
+            <div>You don't currently have any tokens locked up</div>
+        )
+        if(this.state.lockSeed && this.state.lockTeam){
+            let tokenInfo = (this.state.viewing==='seed')?(<TokenInfo lock={this.state.lockSeed} />):(<TokenInfo lock={this.state.lockTeam} />)
+            return (
+            <div>
+                <div style={{width: 300, marginLeft: 'auto', marginRight: 'auto', marginTop: 30}}>
+                    <button onClick={()=>this.choose('seed')} style={{
+                        display: 'inline-block',
+                        border: 'none',
+                        backgroundColor: 'transparent',
+                        fontWeight: (this.state.viewing==='seed')?'bold':'normal',
+                        borderBottom: (this.state.viewing==='seed')?'solid 1px #ffffff':'none',
+                        cursor: (this.state.viewing==='seed')?'none':'pointer',
+                        fontSize: 18,
+                        marginRight: 20,
+                        color: (this.state.viewing==='seed')?'#ffffff':'#eeeeee'
+                    }}>Seed Tokens</button>
+                    <button onClick={()=>this.choose('team')} style={{
+                        display: 'inline-block',
+                        border: 'none',
+                        backgroundColor: 'transparent',
+                        fontWeight: (this.state.viewing==='team')?'bold':'normal',
+                        borderBottom: (this.state.viewing==='team')?'solid 1px #ffffff':'none',
+                        cursor: (this.state.viewing==='team')?'none':'pointer',
+                        fontSize: 18,
+                        marginLeft: 20,
+                        color: (this.state.viewing==='team')?'#ffffff':'#eeeeee'
+                    }}>Team Tokens</button>
+                </div>
+                {tokenInfo}
+            </div>
+            )
+        } 
+        if(this.state.lockSeed) return (<TokenInfo lock={this.state.lockSeed} />)
+        return (<TokenInfo lock={this.state.lockTeam} />)
+    }
+}
+
+export default TokenInfoPage

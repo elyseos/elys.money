@@ -1,36 +1,16 @@
-import twitter from "../images/twitter-black-icon.png"
-import github from "../images/github-black-icon.png"
-import medium from "../images/medium-black-icon.png"
-import email from "../images/email-icon.png"
-import discord from "../images/discord-black-icon.png"
-import telegram from "../images/telegram-black-icon.png"
-
-const Icon = (props) => {
-    return (
-        <a href={props.href} style={{
-            textDecoration: 'none',
-            width: 80,
-            textAlign: 'center',
-            display: 'inline-block'
-        }} target="_blank" rel="noreferrer"><img style={{
-            verticalAlign: 'top',  
-            margin: 13
-        }}
-        src={props.src} alt={props.alt} href={props.href} height={22}/></a>
-    )    
-}
+import {isMobile} from 'react-device-detect';
 
 const Column = (props) => {
     return (
         <div style={{
             display: 'inline-block',
-            width: 180,
+            width: (isMobile)?70:'27%',
             color: '#000000',
             verticalAlign: 'top',
             textAlign: 'left',
             marginLeft: 30
         }}>
-            <div style={{fontSize: 16, fontWeight: 'bold', marginTop: 9, marginBottom: 6}}>{props.header}</div> 
+            <div style={{fontSize: 16, fontWeight: 'bold', marginTop: (isMobile)?5:8, marginBottom: 6}}>{props.header}</div> 
             {props.children}
         </div>
     )
@@ -48,20 +28,20 @@ const Link = (props) => {
     }}>{props.children}</a>
 }
 
-let footerTop = window.innerHeight - 100
-if(footerTop<700)footerTop = 700
+let footerTop = (isMobile)?window.innerHeight - 150:window.innerHeight - 100
+if(!isMobile && footerTop<700)footerTop = 700
 
 const Footer = () => (
     <div style={{
-        position: 'relative',
         display: 'block',
-        marginTop: footerTop-500,
         width: '100%',
         backgroundColor: '#facbac',
+        height: 100,
+        bottom: 0
     }}>
 
         <div style={{
-            maxWidth: 900,
+            maxWidth: 650,
             marginLeft: 'auto',
             marginRight: 'auto'
         }}>
@@ -78,20 +58,7 @@ const Footer = () => (
                 <Link href="roadmap">Roadmap</Link>
                 <Link href="litepaper">Lightpaper</Link>
             </Column>
-            <div style={{
-                display: 'inline-block',
-                right: 0,
-                width: 250,
-                marginTop: 0,
-                textAlign: 'center'
-            }}>
-                <Icon src={twitter} alt="twitter" href="https://twitter.com/ElyseosFDN"/>
-                <Icon src={telegram} alt="telegram" href="https://t.me/joinchat/kJCUkY1WacpkZTVk"/>
-                <Icon src={github} alt="github" href="https://github.com/elyseos/contracts"/>
-                <Icon src={medium} alt="medium" href="https://medium.com/@Elyseos"/>
-                <Icon src={email} alt="email" href="https://www.elyseos.com/email-signup"/>
-                <Icon src={discord} alt="discord" href="https://discord.gg/YKJsDyHDkc"/>
-            </div>
+            
         </div>
     </div>
 )

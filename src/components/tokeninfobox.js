@@ -5,12 +5,12 @@ const TokenInfoBox = (props) => {
         display: 'inline-block',
         fontSize: 30,
         textAlign: 'center',
-        width: 250,
+        width: 220,
         marginLeft: 20,
         marginRight: 25,
         marginTop: 20,
         color: '#ed6f1b',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     }
 
     if(props.loading){
