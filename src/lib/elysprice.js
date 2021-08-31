@@ -1,10 +1,15 @@
 import contractAddress from '../crypto/contractAddress';
+import Web3 from 'web3';
 import abi from '../crypto/uniswapV2PairABI.js';
 
+const rpcEndpoint = 'https://rpc.ftm.tools/'
+
 const getPrice = async (address,dec1,dec2) => {
-    console.log('address: ' + address)
+    let provider = new Web3.providers.HttpProvider(rpcEndpoint)
+    let w3 = new Web3(provider)
+
     try{
-        let pair = new window.web3.eth.Contract(abi,address);
+        let pair = new w3.eth.Contract(abi,address);
         let {reserve0,reserve1} = await pair.methods['getReserves']().call()
         let res0 = reserve0*(10**dec1)
         return (res0/reserve1)/(10**dec2)

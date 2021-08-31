@@ -13,8 +13,8 @@ class Contract {
         return await this.w3.eth.getBalance(address);
     }
 
-    constructor(contractName, address) {
-        this.w3 = window.web3;
+    constructor(contractName, address, w3) {
+        this.w3 = w3 || window.web3;
         this.abi = abi[contractName];
         this.address = address;
         this._contract = new this.w3.eth.Contract(this.abi,this.address);

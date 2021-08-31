@@ -2,8 +2,12 @@ import React, { Component } from 'react'
 import Contract from '../lib/contract'
 import contractAddress from '../crypto/contractAddress';
 import TokenInfoBox from './tokeninfobox'
+import Web3 from 'web3';
 
 //const orange = '#ec7019'
+
+const rpcEndpoint = 'https://rpc.ftm.tools/'
+   
 
 let trimDec = (n,dec) => {
     let ar = n.toString().split('.')
@@ -39,7 +43,9 @@ class Stats extends Component {
         })
     }
     getTotalElys = async () => {
-        let Token = new Contract('elys',contractAddress['elys'])
+        let provider = new Web3.providers.HttpProvider(rpcEndpoint)
+        let w3 = new Web3(provider)
+        let Token = new Contract('elys',contractAddress['elys'],w3)
         try{
             let totalSupply = await Token['totalSupply']()
             return totalSupply

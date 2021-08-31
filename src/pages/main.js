@@ -20,9 +20,11 @@ class Main extends Component {
         sideMenuHidden: isMobile?true:false,
         page: 'home'
     }
-    componentDidMount = () => {
+    componentDidMount = async () => {
         let page = sessionStorage.getItem("page")
         if(page)this.setState({page})
+        let price = await this.getPrice()
+        this.setState({elysPrice:price})
     }
     checkMetamask = async () => {
         let provider = await detectEthereumProvider()
@@ -51,13 +53,9 @@ class Main extends Component {
         return price
     }
     connected = async () => {
-        let price = await this.getPrice()
-        this.setState({connected:true,elysPrice: price})
-        setInterval(async () => {
-            let price = await this.getPrice()
-            price.loaded = true
-            this.setState({connected:true,elysPrice: price})
-        },120000)
+        
+        this.setState({connected:true})
+        
     }
     gotoPage = (page) => {
         this.hideSideBar()
@@ -81,9 +79,11 @@ class Main extends Component {
         switch(this.state.page){
             default:
             case 'home':
-                body = (<PageWrapper connected={this.connected}>
-                    <Intro price={this.state.elysPrice}/>
-                </PageWrapper>)
+                body = (
+                    <div style={{display: 'flex', position: 'relative', minHeight: 700}}>
+                        <Intro price={this.state.elysPrice}/>
+                    </div>
+                )
                 break
             case 'token':
                 body = (<PageWrapper connected={this.connected}>
@@ -91,14 +91,18 @@ class Main extends Component {
                 </PageWrapper>)
                 break
             case 'farm':
-                body = (<PageWrapper connected={this.connected}>
-                    <FarmPage />
-                </PageWrapper>)
+                body = (
+                    <div style={{display: 'flex', position: 'relative', minHeight: 700}}>
+                        <FarmPage />
+                    </div>
+                )
                 break
             case 'swap':
-                body = (<PageWrapper connected={this.connected}>
-                    <SwapPage />
-                </PageWrapper>)
+                body = (
+                    <div style={{display: 'flex', position: 'relative', minHeight: 700}}>
+                        <SwapPage />
+                    </div>
+                )
                 break
                 
         }

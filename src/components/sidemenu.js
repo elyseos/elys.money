@@ -71,7 +71,6 @@ const Logo = (props) => {
 }
 
 const Price = (props) => {
-    if(!props.connected)return null
     return <a style={{ 
         width: 200,
         display: 'block',

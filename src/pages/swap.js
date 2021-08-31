@@ -7,10 +7,10 @@ const SwapPage = (props) => {
             width: isMobile?300:600,
             marginLeft: 'auto',
             marginRight: 'auto',
-            marginTop: 30,
+            marginTop: 50,
             textAlign: 'center'
     }}>
-        <div>If you wish to buy or sell ELYS you can swap FTM for ELYS at ZooDEX</div>
+        <div style={{fontWeight: 'bold'}}>If you wish to buy or sell ELYS you can swap FTM for ELYS at ZooDEX</div>
         <a href="https://dex.zoocoin.cash/orders/market?inputCurrency=FTM&outputCurrency=0xd89cc0d2A28a769eADeF50fFf74EBC07405DB9Fc"
         style={{
             textDecoration: 'none',
