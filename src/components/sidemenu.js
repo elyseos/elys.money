@@ -84,8 +84,7 @@ const Price = (props) => {
         padding: 10,
         textAlign: 'center',
         textDecoration: 'none'
-    }} href=" https://charts.zoocoin.cash/charts?exchange=ZooDex&pair=0x6831b2EDe25Dcc957256FAE815f051181F6C7b08-inverted
-" target="_blank" rel="noreferrer">
+    }} href="https://kek.tools/t/0xd89cc0d2a28a769eadef50fff74ebc07405db9fc" target="_blank" rel="noreferrer">
         <img src={logo} width={30} alt="ElysLogo" />
         <div style={{display: 'inline-block', marginLeft: 10, verticalAlign: 'top', marginTop: 5}}>
             ${trimDec(props.price.usd,2)}

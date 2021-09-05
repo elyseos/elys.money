@@ -17,6 +17,7 @@ class TokenInfo extends Component {
         let lock = this.props.lock
         this.setState({waitingForWithdraw:true})
         //need to do polling etc. here
+        /*
         let checkDone = setInterval(async ()=>{
             try{
                 let available = await lock['amountCanRelease']([])
@@ -30,18 +31,24 @@ class TokenInfo extends Component {
                 console.log(e)
             }
         },20000)
+        */
         try{
             await lock['release']([])
-            clearInterval(checkDone)
-            await this.props.getInfo(this.props.type)
-            this.setState({waitingForWithdraw:false})
+            //clearInterval(checkDone)
+            setTimeout(async()=>{
+                await this.props.getInfo(this.props.type)
+                this.setState({waitingForWithdraw:false})
+            },5000)
+            
         }
         catch(e){
-            clearInterval(checkDone)
+            //clearInterval(checkDone)
             //this.setState({error: true})
             //await this.wait(1000)
-            await this.props.getInfo(this.props.type)
-            this.setState({waitingForWithdraw:false, error: false})
+            setTimeout(async()=>{
+                await this.props.getInfo(this.props.type)
+                this.setState({waitingForWithdraw:false})
+            },1000)
         }
         
     }
@@ -127,7 +134,7 @@ class UnlockPage extends Component {
             available = parseInt(available/100000).toString()
             let info = {
                 loading: false,
-                locked,withdrawn,available,type:'lockType'
+                locked,withdrawn,available,type:lockType
             }
             console.log(info)
             if(lockType==='seed'){

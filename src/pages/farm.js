@@ -1,5 +1,5 @@
 import cannabis from '../images/cannabis-white-icon.png'
-import sanpedro from '../images/sanpedro-white-icon.png'
+import iboga from '../images/iboga-white-icon.png'
 import {isMobile} from 'react-device-detect';
 
 const orange = '#ec7019'
@@ -20,7 +20,8 @@ const Farm = (props) => {
             padding: 10,
             margin: 20,
             height: 280,
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            verticalAlign: 'top'
         }}>
             <img src={props.icon} alt='icon' width={30} />
             <div style={{
@@ -59,8 +60,8 @@ const Farm = (props) => {
 
 const FarmPage = (props) => {
     return (<div style={{display: 'block', marginLeft: 'auto', marginRight: 'auto', marginTop: 40, width: isMobile?370:730}}>
-        <Farm icon={cannabis} title={'The Grow'} pair={'FTM-ELYS'} pairType={'LP Lock'} lockTime={'3-12 Months'} return={'4-24%'} apr={'16-24%'} paidIn={'ELYS'}/>
-        <Farm icon={sanpedro} title={'The Farm'} pair={'FTM-ELYS'} pairType={'Single token Lock'} lockTime={'1-3 Years'} return={'10%'} apr={'20%'} paidIn={'ELYS'}/>
+        <Farm icon={cannabis} title={'The Grow'} pair={'FTM-ELYS'} pairType={'LP Lock'} lockTime={'3, 6, 12 Months'} return={'4%, 10%, 24%'} apr={'16 - 24%'} paidIn={'ELYS'}/>
+        <Farm icon={iboga} title={'The Forest'} pair={'FTM-ELYS'} pairType={'Single token Lock'} lockTime={'12, 24, 36 Months'} return={'12%, 32%, 60%'} apr={'12% - 20%'} paidIn={'ELYS'}/>
         
     </div>)
 }
